@@ -50,23 +50,23 @@
 
 
 (if (not (eql (mongo-connect *conn* "127.0.0.1" 27017) 0))
-    (progn
-      (case (foreign-slot-value *conn* 'mongo :err)
-	(:mongo_conn_no_socket (print "Could not create a socket"))
-	(:mongo_conn_fail (print "FAIL: Could not connect to mongod. Make sure it's listening at 127.0.0.1:27017.")))
-      (quit :unix-status 1)))
+  (progn
+    (case (foreign-slot-value *conn* 'mongo :err)
+      (:mongo_conn_no_socket (print "Could not create a socket"))
+      (:mongo_conn_fail (print "FAIL: Could not connect to mongod. Make sure it's listening at 127.0.0.1:27017.")))
+    (quit :unix-status 1)))
 
 (if (not (eql (mongo-insert *conn* "test.records" *b* (null-pointer)) 0 ))
-    (progn
-      (format t "FAIL: Failed to insert document with error ~a" (foreign-slot-value *conn* 'mongo :err))
-      (quit :unix-status 1)))
+  (progn
+    (format t "FAIL: Failed to insert document with error ~a" (foreign-slot-value *conn* 'mongo :err))
+    (quit :unix-status 1)))
 
 (mongo-cursor-init *cursor* *conn* "test.records")
 (mongo-cursor-set-query *cursor* (bson-empty *empty*))
 (if (not (eql (mongo-cursor-next *cursor*) +mongo_ok+))
-    (progn
-      (print "FAIL: failed to find inserted document")
-      (quit :unix-status 1)))
+  (progn
+    (print "FAIL: failed to find inserted document")
+    (quit :unix-status 1)))
 
 (print "Found saved BSON object")
 (bson-print (mongo-cursor-bson *cursor*))
@@ -74,7 +74,7 @@
 (mongo-cursor-destroy *cursor*)
 (bson-destroy *b*)
 (mongo-destroy *conn*)
-      
+
 
 (defvar *oid* (foreign-alloc :bson_oid_t))
 (bson-oid-gen *oid*)

@@ -6,28 +6,28 @@
 (defpackage bson
   (:use :common-lisp :cffi)
   (:export :bson_type
-	   :bson_t
-           :bson_bool_t
-	   :bson-empty
-          :bson-create
-          :bson-dispose
-          :bson-init
-          :bson-destroy
-          :bson-append-new-oid
-          :bson-append-int
-          :bson-append-string
-	  :bson-append-start-array
-	  :bson-append-start-object
-	  :bson-append-finish-object
-	  :bson-append-finish-array
-	  :bson-iterator-create
-	  :bson-print
-	  :bson-find
-	  :bson-iterator-subobject
-	  :bson-iterator-dispose
-	  :bson-oid-gen
-	  :bson-oid-to-string
-          :bson-finish))
+    :bson_t
+    :bson_bool_t
+    :bson-empty
+    :bson-create
+    :bson-dispose
+    :bson-init
+    :bson-destroy
+    :bson-append-new-oid
+    :bson-append-int
+    :bson-append-string
+    :bson-append-start-array
+    :bson-append-start-object
+    :bson-append-finish-object
+    :bson-append-finish-array
+    :bson-iterator-create
+    :bson-print
+    :bson-find
+    :bson-iterator-subobject
+    :bson-iterator-dispose
+    :bson-oid-gen
+    :bson-oid-to-string
+    :bson-finish))
 
 (in-package bson)
 
@@ -76,37 +76,50 @@
 (cffi:load-foreign-library 'libbson)
 
 (defcfun ("bson_create" :library libbson) :pointer)
+
 (defcfun ("bson_dispose" :library libbson) :void (b :pointer))
 
 (defcfun ("bson_init" :library libbson) :void (b :pointer))
+
 (defcfun ("bson_destroy" :library libbson) :void (b :pointer))
+
 (defcfun ("bson_empty" :library libbson) :pointer (b :pointer))
 
 (defcfun ("bson_append_new_oid" :library libbson) :int
   (b :pointer) (name :string))
+
 (defcfun ("bson_append_int" :library libbson) :int
   (b :pointer) (name :string) (value :int))
+
 (defcfun ("bson_append_string" :library libbson) :int
   (b :pointer) (name :string) (value :string))
+
 (defcfun ("bson_finish" :library libbson) :int (b :pointer) )
 (defcfun ("bson_append_start_array" :library libbson) :int
   (b :pointer) (name :string))
+
 (defcfun ("bson_append_start_object" :library libbson) :int
   (b :pointer) (name :string))
+
 (defcfun ("bson_append_finish_object" :library libbson) :int
   (b :pointer))
+
 (defcfun ("bson_append_finish_array" :library libbson) :int
   (b :pointer))
+
 (defcfun ("bson_iterator_create" :library libbson) :pointer)
 (defcfun ("bson_print" :library libbson) :void
   (b :pointer))
+
 (defcfun ("bson_find" :library libbson) bson_type
   (it :pointer)
   (obj :pointer)
   (name :string))
+
 (defcfun ("bson_iterator_subobject" :library libbson) :void
   (bson_iterator :pointer)
   (sub :pointer))
+
 (defcfun ("bson_iterator_dispose" :library libbson) :void
   (i :pointer))
 
@@ -120,24 +133,24 @@
 (defpackage mongodb
   (:use :common-lisp :cffi :bson)
   (:export :mongo_error_t
-           :mongo
-           :mongo-create
-           :mongo-dispose
-           :mongo-init
-           :mongo-destroy
-           :mongo-connect
-           :mongo-disconnect
-           :mongo-reconnect
-	   :mongo-cursor-create
-	   :mongo-cursor-init
-	   :mongo-cursor-next
-	   :mongo-cursor-bson
-	   :mongo-cursor-destroy
-	   :mongo-cursor-dispose
-	   :mongo-cursor-set-query
-	   :+mongo_ok+
-	   :+mongo_error+
-           :mongo-insert))
+    :mongo
+    :mongo-create
+    :mongo-dispose
+    :mongo-init
+    :mongo-destroy
+    :mongo-connect
+    :mongo-disconnect
+    :mongo-reconnect
+    :mongo-cursor-create
+    :mongo-cursor-init
+    :mongo-cursor-next
+    :mongo-cursor-bson
+    :mongo-cursor-destroy
+    :mongo-cursor-dispose
+    :mongo-cursor-set-query
+    :+mongo_ok+
+    :+mongo_error+
+    :mongo-insert))
 
 (in-package mongodb)
 
@@ -214,7 +227,7 @@
   (:mongo_op_kill_cursors 2007))
 
 
-;(defconst +mongo_err_len+ 128)
+;; (defconst +mongo_err_len+ 128)
 
 ;;; structs
 
@@ -269,15 +282,19 @@
 
 
 (defcfun ("mongo_create" :library libmongoc) :pointer)
+
 (defcfun ("mongo_dispose" :library libmongoc) :void (conn :pointer))
 
 (defcfun ("mongo_init" :library libmongoc) :void (conn :pointer))
+
 (defcfun ("mongo_destroy" :library libmongoc) :void (conn :pointer))
 
 (defcfun ("mongo_connect" :library libmongoc) :int
   (conn :pointer) (host :string) (port :int))
+
 (defcfun ("mongo_disconnect" :library libmongoc) :void
   (conn :pointer))
+
 (defcfun ("mongo_reconnect" :library libmongoc) :int
   (conn :pointer))
 
@@ -285,16 +302,22 @@
   (conn :pointer) (ns :string) (bson :pointer) (write_concern :pointer))
 
 (defcfun ("mongo_cursor_create" :library libmongoc) :pointer)
+
 (defcfun ("mongo_cursor_init" :library libmongoc) :void
   (cursor :pointer)
   (conn :pointer)
   (ns :string))
+
 (defcfun ("mongo_cursor_set_query" :library libmongoc) :void
   (cursor :pointer)
   (query :pointer))
+
 (defcfun ("mongo_cursor_next" :library libmongoc) :int
   (cursor :pointer))
+
 (defcfun ("mongo_cursor_bson" :library libmongoc) :pointer
   (cursor :pointer))
+
 (defcfun ("mongo_cursor_destroy" :library libmongoc) :void (conn :pointer))
+
 (defcfun ("mongo_cursor_dispose" :library libmongoc) :void (conn :pointer))
