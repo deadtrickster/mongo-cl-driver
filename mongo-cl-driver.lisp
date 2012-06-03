@@ -95,6 +95,7 @@
   (b :pointer) (name :string) (value :string))
 
 (defcfun ("bson_finish" :library libbson) :int (b :pointer) )
+
 (defcfun ("bson_append_start_array" :library libbson) :int
   (b :pointer) (name :string))
 
@@ -108,6 +109,7 @@
   (b :pointer))
 
 (defcfun ("bson_iterator_create" :library libbson) :pointer)
+
 (defcfun ("bson_print" :library libbson) :void
   (b :pointer))
 
