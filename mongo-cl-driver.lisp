@@ -173,8 +173,7 @@
   :mongo_conn_addr_fail
   :mongo_conn_not_master
   :mongo_conn_bad_set_name
-  :mongo_conn_not_primary
-
+  :mongo_conn_no_primary
   :mongo_io_error
   :mongo_socket_error
   :mongo_read_size_error
